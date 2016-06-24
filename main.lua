@@ -1,26 +1,31 @@
 -- Initializing Vars
 gameActive 		= 	nil
+gameMenu 		= 	nil
 gamePaused 		=	nil
-controls  		=   nil
+controls  		=   	nil
 keyString		= 	nil
 player 			= 	nil
+pSet 			= 	nil
 
 function love.load()
 	-- Global Vars
 	gameActive 	= 	true
+	gameMenu 	= 	true
 	gamePaused 	= 	false
 	-- Setting up ingame controls
 	controls 		= 	{}
-	controls.up    	=   "w"
-	controls.left   =   "a"
-	controls.down   =   "s"
-	controls.right  =   "d"
+	controls.up    	=   	"w"
+	controls.left   =   	"a"
+	controls.down   =   	"s"
+	controls.right  =   	"d"
+	controls.sneak 	= 	"shift"
 	controls.pause 	=	"escape"
 	keyString		= 	{}
 	keyString[ "w" ] 	= 	"[W]"
 	keyString[ "a" ] 	= 	"[A]"
 	keystring[ "s" ] 	= 	"[S]"
 	keystring[ "d" ] 	= 	"[D]"
+	keystring[ "shift" ] 	= 	"[SHIFT]"
 	keyString[ "escape" ] 	= 	"[ESC]"
 	
 	-- Creating player
@@ -43,7 +48,9 @@ end
 
 function love.update( dt )
 	if not gameActive then return end
+	if gameMenu then return end
 	if not gamePaused then return end
+	player.angle  	= 	getplayerAngle()
 end
 
 function love.draw()
@@ -54,8 +61,28 @@ end
 
 function love.keypressed( key )
 	if gameActive then
+		-- Check for pause key
 		if key == controls.pause then
 			gamePaused 	= 	not gamePaused
 		end
+		-- Check for directional controls
 	end
+end
+
+function love.focus( f )
+	if not f then
+		gamePaused 	= 	true
+	end
+end
+
+function love.quit()
+	print( "Thanks for playing :) Come back soon!" )	
+end
+
+function getplayerAngle()
+	local x, y	= 	love.mouse.GetPosition()
+	local dX	=	x - player.x
+	local dY 	= 	y - player.y
+	local radian 	= 	math.atan2( dY, dX )
+	return radian * ( 180 / math.pi )
 end
