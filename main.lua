@@ -1,88 +1,128 @@
--- Initializing Vars
-gameActive 		= 	nil
-gameMenu 		= 	nil
-gamePaused 		=	nil
-controls  		=   	nil
-keyString		= 	nil
-player 			= 	nil
-pSet 			= 	nil
+Gamestate 	=	require( "frameworks.hump.gamestate" )
+-- Setting up Gamestates
+local state_mainmenu 	= 	{}
+local state_optionsmenu	= 	{}
+local state_confirmquit	= 	{}
+local state_game 		= 	{}
+local state_pause 		= 	{}
+local state_gameover	= 	{}
+
+function state_mainmenu:enter()
+	mainmenu 	= 	{}
+	mainmenu.res 	= 	require( "resources.mainmenu" )
+end
+
+function state_mainmenu:update( dt )
+	-- if requirement met then
+	Gamestate.switch( state_game )
+	Gamestate.switch( state_optionsmenu )
+end
+
+function state_mainmenu:draw()
+	
+end
+
+function state_mainmenu:keyreleased( key, code )
+	if key == "x" then 			-- placeholder -> import global control settings
+		Gamestate.switch( state_confirmquit )
+	end
+end
+
+function state_mainmenu:mousereleased( x, y, button )
+	-- Check if mouse is placed where the gamebutton is
+	-- Game button
+	Gamestate.switch( state_mainmenu )
+	-- Options button
+	Gamestate.switch( state_optionsmenu )
+	-- Quit button
+	Gamestate.switch( state_confirmquit )
+end
+
+function state_optionsmenu:enter()
+	optionsmenu 	= 	{}
+	optionsmenu.res 	= 	require( "resources.optionsmenu" )
+end
+
+function state_optionsmenu:update( dt )
+	
+end
+
+function state_optionsmenu:draw()
+	
+end
+
+function state_optionsmenu:keyreleased( key, code )
+	
+end
+
+function state_optionsmenu:mousereleased( x, y, button )
+	
+end
+
+function state_confirmquit:enter()
+	confirmquit 	= 	{}
+	confirmquit.res 	= 	require( "resources.confirmquit" )
+end
+
+function state_confirmquit:update( dt )
+	
+end
+
+function state_confirmquit:draw()
+	
+end
+
+function state_confirmquit:keyreleased( key, code )
+	
+end
+
+function state_confirmquit:mousereleased( x, y, button )
+	
+end
+
+function state_game:enter()
+	game 	=	{}
+	game.res 	= 	require( "resources.game" )
+end
+
+function state_game:update( dt )
+	
+end
+
+function state_game:draw()
+	
+end
+
+function state_game:keypressed( key, code )
+	
+end
+
+function state_game:keyreleased( key, code )
+	
+end
+	
+function state_game:mousepressed( x, y, button )
+	
+end
+
+function state_game:mousereleased( x, y, button )
+	
+end
+
+function state_pause:enter()
+	pause 	= 	{}
+	pause.res 	= 	require( "resources.pause" )
+end
+
+function state_pause:update( dt )
+	
+end
+
+function state_pause:draw()
+	
+end
 
 function love.load()
-	-- Global Vars
-	gameActive 	= 	true
-	gameMenu 	= 	true
-	gamePaused 	= 	false
-	-- Setting up ingame controls
-	controls 		= 	{}
-	controls.up    	=   	"w"
-	controls.left   =   	"a"
-	controls.down   =   	"s"
-	controls.right  =   	"d"
-	controls.sneak 	= 	"shift"
-	controls.pause 	=	"escape"
-	keyString		= 	{}
-	keyString[ "w" ] 	= 	"[W]"
-	keyString[ "a" ] 	= 	"[A]"
-	keystring[ "s" ] 	= 	"[S]"
-	keystring[ "d" ] 	= 	"[D]"
-	keystring[ "shift" ] 	= 	"[SHIFT]"
-	keyString[ "escape" ] 	= 	"[ESC]"
-	
-	-- Creating player
-	player 	=	{}
-	player.x 	= 	900
-	player.y 	= 	450
-	player.running 	= 	false
-	player.sneaking	= 	false
-	player.shooting = 	false
-	player.angle 	= 	nil
-	player.dir 		=	nil
-	
-	-- Setting up physical vars the player is influenced by
-	pSet 	= 	{}
-	pSet.maxSpeed 	= 	100
-	pSet.friction 	= 	nil
-	pSet.acceleration 	= 	nil
-	pSet.mass 		= 	80
-end
-
-function love.update( dt )
-	if not gameActive then return end
-	if gameMenu then return end
-	if not gamePaused then return end
-	player.angle  	= 	getplayerAngle()
-end
-
-function love.draw()
-	if gamePaused then
-		love.graphics.print( "The game is currently paused. Unpause with" .. keyString[ controls.pause ], 300, 450 )	
-	end
-end
-
-function love.keypressed( key )
-	if gameActive then
-		-- Check for pause key
-		if key == controls.pause then
-			gamePaused 	= 	not gamePaused
-		end
-		-- Check for directional controls
-	end
-end
-
-function love.focus( f )
-	if not f then
-		gamePaused 	= 	true
-	end
-end
-
-function love.quit()
-	print( "Thanks for playing :) Come back soon!" )	
-end
-
-function getplayerAngle()
-	local x, y	= 	love.mouse.GetPosition()
-	local dX	=	x - player.x
-	local dY 	= 	y - player.y
-	local radian 	= 	math.atan2( dY, dX )
-	return radian * ( 180 / math.pi )
+	Gamestate.registerEvents()
+	Gamestate.switch( state_mainmenu )
 end
