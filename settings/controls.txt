@@ -1,0 +1,8 @@
+up	w	move up
+down	s	move down
+left	a	move left
+right	d	move right
+sneak	lshift	sneak
+shoot	1	shoot
+reload	r	reload
+pause	escape	pause
