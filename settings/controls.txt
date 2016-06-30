@@ -1,8 +1,8 @@
-up	w	move up
-down	s	move down
-left	a	move left
-right	d	move right
-sneak	lshift	sneak
-shoot	1	shoot
-reload	r	reload
-pause	escape	pause
+game_up	w	move up
+game_down	s	move down
+game_left	a	move left
+game_right	d	move right
+game_sneak	lshift	sneak
+game_shoot	mouse1	shoot
+game_reload	r	reload
+game_pause	escape	pause
